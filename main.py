@@ -1,18 +1,25 @@
-"""Writes one joke about working beside an AI coding agent to the grader output directory."""
+"""Write a one-line comedy entry about coding with an AI agent."""
+
+from __future__ import annotations
 
 import os
 
-JOKE = (
-    "I sent the agent the crash log. It replied 'fixed'. "
-    "It had fixed the log file - best-looking crash report in the industry."
-)
+JOKE = "I asked the AI agent to fix the crash, and it proudly commented out the crash log."
 
 
 def main() -> None:
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8", newline="\n") as f:
-        f.write(JOKE)
+    """Write the joke to the configured output directory."""
+    if not isinstance(JOKE, str) or not JOKE.strip():
+        raise ValueError("JOKE must be a non-empty string.")
+    if len(JOKE) > 280:
+        raise ValueError(f"JOKE must be <= 280 characters, got {len(JOKE)}.")
+
+    output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+    output_path = os.path.join(output_dir, "entry.txt")
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as handle:
+        handle.write(JOKE)
 
 
 if __name__ == "__main__":
